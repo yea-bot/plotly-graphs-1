@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotly 그래프</title>
+    <!-- Plotly.js 라이브러리 포함 -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- 그래프를 삽입할 div 태그 -->
+    <div id="plotly-graph"></div>
+    <!-- Plotly 그래프 스크립트 -->
+    <script>
+        // JSON 데이터 경로
+        var json_urls = [
+        'https://yea-bot.github.io/plotly-graphs/E2_1_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E2_2_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E2_3_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E2_4_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E2_5_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E3_1_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E3_2_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E3_3_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E3_4_plot.json',
+        'https://yea-bot.github.io/plotly-graphs/E3_5_plot.json',
+        // 필요한 만큼 추가
+        ];
+
+        // JSON 데이터를 불러와 그래프 그리기
+        fetch(json_url)
+            .then(response => response.json())
+            .then(data => {
+                var graphData = JSON.parse(data).data;
+                var graphLayout = JSON.parse(data).layout;
+                Plotly.newPlot('plotly-graph', graphData, graphLayout);
+            })
+            .catch(error => console.error('Error fetching JSON data:', error));
+    </script>
+</body>
+</html>
