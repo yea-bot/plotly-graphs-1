@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plotly 그래프</title>
+    <!-- Plotly.js 라이브러리 포함 -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- 그래프를 삽입할 div 태그 -->
+    <div id="plotly-graph"></div>
+    <!-- Plotly 그래프 스크립트 -->
+    <script>
+        // JSON 데이터 경로
+        var json_urls = [
+        'https://yea-bot.github.io/plotly-graphs/E2_1_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E2_2_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E2_3_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E2_4_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E2_5_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E3_1_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E3_2_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E3_3_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E3_4_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/E3_5_plot.html',
+        'https://yea-bot.github.io/plotly-graphs/relax_v_feature_plot.html',
+        // 필요한 만큼 추가
+        ];
+
+        // 모든 JSON 파일을 불러와서 그래프 그리기
+        Promise.all(json_urls.map(url => fetch(url).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })))
+        .then(dataArray => {
+            var allGraphData = [];
+            var allGraphLayout = null;
+            
+            dataArray.forEach(data => {
+                var graphData = data.data;
+                var graphLayout = data.layout;
+
+                allGraphData = allGraphData.concat(graphData);
+                if (!allGraphLayout) {
+                    allGraphLayout = graphLayout;
+                }
+            });
+
+            Plotly.newPlot('plotly-graph', allGraphData, allGraphLayout);
+        })
+        .catch(error => console.error('Error fetching JSON data:', error));
+    </script>
+</body>
+</html>
