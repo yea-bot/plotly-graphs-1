@@ -14,36 +14,30 @@
     <script>
         // JSON 데이터 경로
         var json_urls = [
-        'https://yea-bot.github.io/plotly-graphs/E2_1_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E2_2_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E2_3_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E2_4_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E2_5_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E3_1_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E3_2_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E3_3_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E3_4_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/E3_5_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/relax_v_feature_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/Extracted_all_feature_plot-classify_nat_energy.html',
-        'https://yea-bot.github.io/plotly-graphs/Feature_pair_plot-classify_nat_energy.html',
-        'https://yea-bot.github.io/plotly-graphs/Histograms_of_all_features.html',
-        'https://yea-bot.github.io/plotly-graphs/two_features_classification_random_forest_model_plot',
-        'https://yea-bot.github.io/plotly-graphs/two_features_classification_ridge_model_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/two_features_classification_svc_model_plot.html',
-        'https://yea-bot.github.io/plotly-graphs/two_features_classification_xgb_model_plot.html',
-
+        ,
 
         // 필요한 만큼 추가
         ];
 
-        // 모든 JSON 파일을 불러와서 그래프 그리기
-        Promise.all(json_urls.map(url => fetch(url).then(response => {
+        // 파일 목록 JSON 파일 경로
+        var filesListUrl = 'https://yea-bot.github.io/plotly-graphs-2/files.json';
+
+        // 파일 목록 JSON 불러오기
+        fetch(filesListUrl)
+        .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
             }
             return response.json();
-        })))
+        })
+        .then(jsonUrls => {
+            return Promise.all(jsonUrls.map(url => fetch(url).then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })));
+        })
         .then(dataArray => {
             var allGraphData = [];
             var allGraphLayout = null;
@@ -57,6 +51,7 @@
                     allGraphLayout = graphLayout;
                 }
             });
+
 
             Plotly.newPlot('plotly-graph', allGraphData, allGraphLayout);
         })
